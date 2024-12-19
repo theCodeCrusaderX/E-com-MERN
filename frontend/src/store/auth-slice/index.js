@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+
+//global initial state
 const initialState = {
   isAuthenticated: false,
   isLoading: true,
@@ -65,7 +67,7 @@ export const checkAuth = createAsyncThunk("/auth/checkAuth", async () => {
       },
     }
   );
-  console.log("response form backend hmm :: ", response.data);
+  console.log("response form backend :: ", response.data);
 
   return response.data;
 });

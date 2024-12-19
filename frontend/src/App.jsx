@@ -10,7 +10,7 @@ import AdminLayout from "./components/admin-view/Adminlayout";
 import AdminDashboard from "./pages/admin-view/AdminDashboard";
 import AdminOrder from "./pages/admin-view/AdminOrder";
 import AdminFeatures from "./pages/admin-view/AdminFeatures";
-import AdminProduct from "./pages/admin-view/AdminProduce";
+import AdminProduct from "./pages/admin-view/AdminProduct";
 
 //shopping-view
 import ShoppingLayout from "./components/shopping-view/Shoppinglayout";
@@ -35,6 +35,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export default function App() {
 
+
+//app state :: 
   // const user = {
   //   role : "admin",
   //   name : "12"

@@ -56,7 +56,7 @@ function ImageUpload({
 
     const res = await axios.post("http://localhost:8000/api/v1/admin/img-upload",data)
 
-    console.log(res);
+    console.log("res", res);
     if (res?.data?.success) {
       setUploadedImageUrl(res.data.result.url);
       setImageLoadingState(false);
