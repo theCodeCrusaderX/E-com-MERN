@@ -108,6 +108,7 @@ const logOut = asyncHandler(async (req, res) => {
     {
       $unset: {
         refreshToken: undefined,
+        accessToken: undefined
       },
     },
     {

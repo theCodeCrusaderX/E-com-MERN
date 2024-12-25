@@ -33,5 +33,9 @@ app.use("/api/v1/users",userRouter)
 import adminRouter from "./routes/admin/products.route.js"
 app.use("/api/v1/admin",adminRouter)
 
+//api for shop/user
+import shopRouter from "./routes/shop/product.route.js"
+app.use("/api/v1/shop",shopRouter)
+
 
 export {app}
