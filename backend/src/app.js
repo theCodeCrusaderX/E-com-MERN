@@ -37,5 +37,9 @@ app.use("/api/v1/admin",adminRouter)
 import shopRouter from "./routes/shop/product.route.js"
 app.use("/api/v1/shop",shopRouter)
 
+//api for shop/cart
+import shopCartRouter from "./routes/shop/cart.route.js"
+app.use("/api/v1/shop/cart",shopCartRouter)
+
 
 export {app}

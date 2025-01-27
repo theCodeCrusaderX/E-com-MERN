@@ -1,5 +1,5 @@
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { Product } from "../models/product.model.js";
+import { uploadOnCloudinary } from "../../utils/cloudinary.js";
+import { Product } from "../../models/product.model.js";
 
 const handleImageUpload = async (req, res) => {
   try {
@@ -55,7 +55,6 @@ const addProduct = async (req, res) => {
         category,
         brand,
         productPrice,
-        productSalePrice,
         totalStock,
       ].some((filed) => filed?.trim() === "")
     ) {

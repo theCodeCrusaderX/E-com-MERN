@@ -1,7 +1,7 @@
-import { Card, CardContent, CardFooter } from "../../components/ui/card";
-import { Button } from "../../components/ui/button";
+import { Card, CardContent, CardFooter } from "../ui/card";
+import { Button } from "../ui/button";
 import { brandOptionsMap, categoryOptionsMap } from "@/config";
-import { Badge } from "../../components/ui/badge";
+import { Badge } from "../ui/badge";
 
 function ShoppingProductTile({
   product,
@@ -14,7 +14,7 @@ function ShoppingProductTile({
         <div className="relative">
           <img
             src={product?.image}
-            alt={product?.title}
+            alt={product?.productTitle}
             className="w-full h-[300px] object-cover rounded-t-lg"
           />
           {product?.totalStock === 0 ? (
@@ -25,33 +25,33 @@ function ShoppingProductTile({
             <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
               {`Only ${product?.totalStock} items left`}
             </Badge>
-          ) : product?.salePrice > 0 ? (
+          ) : product?.productSalePrice > 0 ? (
             <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
               Sale
             </Badge>
           ) : null}
         </div>
         <CardContent className="p-4">
-          <h2 className="text-xl font-bold mb-2">{product?.title}</h2>
+          <h2 className="text-xl font-bold mb-2">{product?.productTitle}</h2>
           <div className="flex justify-between items-center mb-2">
             <span className="text-[16px] text-muted-foreground">
-              {categoryOptionsMap[product?.category]}
+              {product?.category}
             </span>
             <span className="text-[16px] text-muted-foreground">
-              {brandOptionsMap[product?.brand]}
+              {product?.brand}
             </span>
           </div>
           <div className="flex justify-between items-center mb-2">
             <span
               className={`${
-                product?.salePrice > 0 ? "line-through" : ""
+                product?.productSalePrice > 0 ? "line-through" : ""
               } text-lg font-semibold text-primary`}
             >
-              ${product?.price}
+              ${product?.productPrice}
             </span>
-            {product?.salePrice > 0 ? (
+            {product?.productSalePrice > 0 ? (
               <span className="text-lg font-semibold text-primary">
-                ${product?.salePrice}
+                ${product?.productSalePrice}
               </span>
             ) : null}
           </div>

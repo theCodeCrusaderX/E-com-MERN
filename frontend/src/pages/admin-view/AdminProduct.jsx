@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+
+
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -18,19 +21,28 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import ImageUpload from "@/components/admin-view/ImageUpload";
-import { useDispatch, useSelector } from "react-redux";
 import {
   addNewProduct,
   fetchAllProducts,
   editProduct,
-  deleteProduct
+  deleteProduct,
 } from "@/store/admin/products-slice";
 import { toast } from "@/hooks/use-toast";
 
 import AdminProductTile from "@/components/admin-view/AdminProductTile";
 
 function AdminProduct() {
-  const { register, handleSubmit, reset, control } = useForm();
+  const { handleSubmit, reset, control } = useForm({
+    defaultValues : {
+      productTitle : "",
+      productDescription : "",
+      category : "",
+      brand : "",
+      productPrice: 0,
+      productSalePrice : 0,
+      totalStock : 0
+    }
+  });
   const [openSheet, setOpenSheet] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
@@ -44,15 +56,13 @@ function AdminProduct() {
   // console.log("currentEditedId",currentEditedId);
   // console.log("productToEdit", productToEdit);
 
-
   const handleDeleteProduct = (id) => {
-    
     dispatch(deleteProduct(id)).then((data) => {
-      if(data.payload.success === true) {
-        dispatch(fetchAllProducts())
+      if (data.payload.success === true) {
+        dispatch(fetchAllProducts());
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     dispatch(fetchAllProducts());
@@ -81,8 +91,7 @@ function AdminProduct() {
       image: uploadedImageUrl,
     };
 
-    console.log("data",data);
-    
+    console.log("data", data);
 
     currentEditedId !== null
       ? dispatch(
@@ -116,7 +125,7 @@ function AdminProduct() {
             });
           }
         });
-  };
+  };  
 
   return (
     <div>
@@ -132,7 +141,7 @@ function AdminProduct() {
                 setOpenSheet={setOpenSheet}
                 setCurrentEditedId={setCurrentEditedId}
                 setProductToEdit={setProductToEdit}
-                handleDeleteProduct = {handleDeleteProduct}
+                handleDeleteProduct={handleDeleteProduct}
               />
             ))
           : null}
@@ -166,25 +175,23 @@ function AdminProduct() {
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <Label>Title</Label>
-            <Input
+            <Controller
+              name="productTitle"
+              control={control}
               type="text"
-              placeholder="Enter Product Title"
-              {...register("productTitle")}
-              defaultValue="" // Default value for productTitle
-              required={true}
+              render={({ field }) => <Input {...field} />}
             />
             <Label>Description</Label>
-            <Textarea
-              type="text"
-              placeholder="Enter Product Description"
-              {...register("productDescription")}
-              defaultValue=""
+            <Controller
+              name="productDescription"
+              control={control}
+              type = "text"
+              render={({ field }) => <Textarea {...field} />}
             />
             <Label>Category</Label>
             <Controller
               name="category"
               control={control}
-              defaultValue=""
               render={({ field }) => (
                 <Select
                   value={field.value} // Dynamically set value
@@ -194,8 +201,8 @@ function AdminProduct() {
                     <SelectValue placeholder="Select Category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="man">Man</SelectItem>
-                    <SelectItem value="woman">Woman</SelectItem>
+                    <SelectItem value="men">Men</SelectItem>
+                    <SelectItem value="women">Women</SelectItem>
                     <SelectItem value="kids">Kids</SelectItem>
                     <SelectItem value="accessories">Accessories</SelectItem>
                     <SelectItem value="footwear">Footwear</SelectItem>
@@ -217,37 +224,40 @@ function AdminProduct() {
                     <SelectValue placeholder="Select Brand" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Nike">Nike</SelectItem>
-                    <SelectItem value="Adidas">Adidas</SelectItem>
-                    <SelectItem value="Puma">Puma</SelectItem>
-                    <SelectItem value="Levi's">Levi's</SelectItem>
-                    <SelectItem value="Zara">Zara</SelectItem>
-                    <SelectItem value="H&M">H&M</SelectItem>
+                    <SelectItem value="nike">Nike</SelectItem>
+                    <SelectItem value="adidas">Adidas</SelectItem>
+                    <SelectItem value="puma">Puma</SelectItem>
+                    <SelectItem value="levi's">Levi's</SelectItem>
+                    <SelectItem value="zara">Zara</SelectItem>
+                    <SelectItem value="h&m">H&M</SelectItem>
                   </SelectContent>
                 </Select>
               )}
             />
 
             <Label>Price</Label>
-            <Input
+            <Controller
+              name="productPrice"
+              placeholder = "Enter Product Price"
               type="number"
-              placeholder="Enter Product Price"
-              {...register("productPrice")}
-              defaultValue=""
+              control={control}
+              render={({ field }) => <Input {...field} />}
             />
             <Label>Sale Price</Label>
-            <Input
+            <Controller 
+              name="productSalePrice"
+              placeholder="Enter Product Sale Price"
+              control={control}
               type="number"
-              placeholder="Enter Sale Price (optional)"
-              {...register("productSalePrice")}
-              defaultValue=""
+              render={({field}) => <Input {...field}/>}
             />
             <Label>Total Stock</Label>
-            <Input
+            <Controller 
+              name="totalStock"
+              placeholder="Enter total stock"
+              control={control}
               type="number"
-              placeholder="Enter Total Stock"
-              {...register("totalStock")}
-              defaultValue=""
+              render={({field}) => <Input {...field}/>}
             />
             <Button type="submit">
               {currentEditedId != null ? "Update" : "Add"}
