@@ -6,7 +6,7 @@ import axios from "axios";
 const initialState = {
   isAuthenticated: false,
   isLoading: true,
-  user: {},
+  user: null,
 };
 
 export const registerUser = createAsyncThunk(
@@ -72,6 +72,21 @@ export const checkAuth = createAsyncThunk("/auth/checkAuth", async () => {
   return response.data;
 });
 
+export const loginAsGuest = createAsyncThunk(
+  "/auth/loginAsGuest",
+  async () => {
+    const response = await axios.post(
+      "http://localhost:8000/api/v1/users/guest-login",
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    console.log("response from backend :: ", response.data);
+    return response.data;
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -103,7 +118,9 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         (state.isLoading = false),
-          (state.isAuthenticated = action.payload.success),
+          (state.isAuthenticated = action.payload.success),     
+          console.log('001',action);
+               
           (state.user = action.payload.success && action.payload.data.user);
       })
       .addCase(checkAuth.pending, (state) => {
@@ -123,6 +140,19 @@ const authSlice = createSlice({
         (state.isLoading = false),
           (state.user = null),
           (state.isAuthenticated = false);
+      })
+      .addCase(loginAsGuest.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(loginAsGuest.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuthenticated = action.payload.success;
+        state.user = action.payload.success && action.payload.data.user;
+      })
+      .addCase(loginAsGuest.rejected, (state) => {
+        state.isLoading = false;
+        state.isAuthenticated = false;
+        state.user = null;
       });
   },
 });

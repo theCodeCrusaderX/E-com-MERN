@@ -29,6 +29,9 @@ export const fetchCartItems = createAsyncThunk(
       `http://localhost:8000/api/v1/shop/cart/get/${userId}`
     );
 
+    console.log('202',response);
+    
+
     return response.data;
   }
 );

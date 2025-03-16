@@ -28,8 +28,12 @@ function MenuItems() {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
 
+  console.log("searchParams is :: ",searchParams);
+  
+
   function handleNavigate(getCurrentMenuItem) {
     sessionStorage.removeItem("filters");
+    
     const currentFilter =
       getCurrentMenuItem.id !== "home" &&
       getCurrentMenuItem.id !== "products" &&
@@ -90,7 +94,7 @@ function HeaderRightContent() {
           <ShoppingCart className="w-6 h-6" />
           <span className="sr-only">User Cart</span>
         </Button>
-        <UserCartWrapper cartItems={cartItems} />
+        <UserCartWrapper cartItems={cartItems} setOpen={setOpen} />
       </Sheet>
 
 
@@ -122,8 +126,7 @@ function HeaderRightContent() {
 
 function ShoppingHeader() {
   const { user } = useSelector((state) => state.auth);
-
-  console.log("useruser", user);
+  // console.log("useruser", user);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
@@ -132,6 +135,8 @@ function ShoppingHeader() {
           <HousePlug className="h-6 w-6" />
           <span className="font-bold">Ecommerce</span>
         </Link>
+
+        {/* mobile view */}
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="lg:hidden">
@@ -145,7 +150,7 @@ function ShoppingHeader() {
           </SheetContent>
         </Sheet>
 
-        {/* menu items */}
+        {/* menu items for desktop view */}
         <div className="hidden lg:block">
           <MenuItems />
         </div>

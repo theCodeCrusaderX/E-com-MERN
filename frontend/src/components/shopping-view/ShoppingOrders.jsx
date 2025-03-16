@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -7,41 +6,34 @@ import {
   TableRow,
   TableCell,
   TableBody,
-} from "../../components/ui/table";
-import { Button } from "../../components/ui/button";
-import { Dialog } from "@/components/ui/dialog";
-
-import { useForm, Controller } from "react-hook-form";
-import AdminOrderDetailsView from "../../components/shopping-view/AdminOrderDetailsView";
+} from "../ui/table";
+import { Button } from "../ui/button";
+import { Dialog } from "../ui/dialog";
+import ShoppingOrderDetailsView from "./ShoppingOrderDetailsView";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAllOrdersForAllUser,
+  getAllOrdersByUserId,
   getOrderDetails,
   resetOrderDetails,
-} from "@/store/admin/order-slice";
+} from "@/store/shop/order-slice";
 
-function AdminOrder() {
+function ShoppingOrders() {
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { orderList, orderDetails } = useSelector((state) => state.shopOrder);
+
+  useEffect(() => {
+    dispatch(getAllOrdersByUserId(user?._id)).then((res) => console.log(res));
+  }, [dispatch]);
+
+  console.log("orderList", orderList);
+
   const [openProductDetailsDialog, setOpenProductDetailsDialog] =
     useState(false);
-
-  const { register, control, reset } = useForm({
-    defaultValues: {
-      status: "",
-    },
-  });
-
-  const { orderList, orderDetails } = useSelector((state) => state.adminOrder);
-  const dispatch = useDispatch();
 
   function handleFetchOrderDetails(id) {
     dispatch(getOrderDetails(id));
   }
-
-  useEffect(() => {
-    dispatch(getAllOrdersForAllUser());
-  }, [dispatch]);
-
-  console.log("orderList", orderList);
 
   useEffect(() => {
     if (orderDetails !== null) setOpenProductDetailsDialog(true);
@@ -53,18 +45,22 @@ function AdminOrder() {
       <div>
         <Table>
           <TableHeader>
-            <TableHead>orderId</TableHead>
-            <TableHead>orderDate</TableHead>
-            <TableHead>status</TableHead>
-            <TableHead>price</TableHead>
-            <TableHead></TableHead>
+            <TableRow>
+              <TableHead>Order ID</TableHead>
+              <TableHead>Order Date</TableHead>
+              <TableHead>Order Status</TableHead>
+              <TableHead>Order Price</TableHead>
+              <TableHead>
+                <span className="sr-only">Details</span>
+              </TableHead>
+            </TableRow>
           </TableHeader>
           <TableBody>
-            {orderList?.length > 0 &&
+            {orderList &&
               orderList.map((orderItem) => (
                 <TableRow>
                   <TableCell>{orderItem._id}</TableCell>
-                  <TableCell>{orderItem.orderDate}</TableCell>
+                  <TableCell>{orderItem.orderDate.split("T")[0]}</TableCell>
                   <TableCell>{orderItem.orderStatus}</TableCell>
                   <TableCell>{orderItem.totalAmount}</TableCell>
                   <TableCell>
@@ -76,11 +72,13 @@ function AdminOrder() {
                       }}
                     >
                       <Button
-                        onClick={() => handleFetchOrderDetails(orderItem?._id)}
+                        onClick={() => (
+                          handleFetchOrderDetails(orderItem?._id)
+                        )}
                       >
                         View Details
                       </Button>
-                      <AdminOrderDetailsView orderDetails={orderDetails} />
+                      <ShoppingOrderDetailsView orderDetails={orderDetails} />
                     </Dialog>
                   </TableCell>
                 </TableRow>
@@ -92,4 +90,4 @@ function AdminOrder() {
   );
 }
 
-export default AdminOrder;
+export default ShoppingOrders;

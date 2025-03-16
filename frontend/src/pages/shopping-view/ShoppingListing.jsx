@@ -18,6 +18,7 @@ import ShoppingProductDetail from "../../components/shopping-view/ShoppingProduc
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { useToast } from "@/hooks/use-toast";
 
+
 //TODO:  debugg
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
@@ -35,6 +36,8 @@ function createSearchParamsHelper(filterParams) {
   return queryParams.join("&");
 }
 
+
+
 function ShoppingListing() {
   const dispatch = useDispatch();
   const { productList, productDetails } = useSelector(
@@ -42,7 +45,15 @@ function ShoppingListing() {
   );
   const { user } = useSelector((state) => state.auth);
   const [sort, setSort] = useState(null);
-  const toast = useToast();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categorySearchParam = searchParams.get("category");
+
+  // console.log('005',productList);
+
+  const {cartItems} = useSelector(state => (state.shopCart))
+
+  const {toast} = useToast();
 
   function handleSort(value) {
     setSort(value);
@@ -79,13 +90,15 @@ function ShoppingListing() {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
 
+  
+  console.log(2882,categorySearchParam);
+  
   // setting defaluly val to sort and filters on page load
   useEffect(() => {
     setSort("price-lowtohigh");
-    setFilters(JSON.parse(sessionStorage.getItem("filters")) || {}); //fetching and seting filter from sessionStorage
-  }, []);
+    setFilters(JSON.parse(sessionStorage.getItem("filters")) || {}); //fetching and setting filter from sessionStorage
+  }, [categorySearchParam]);
 
-  const [searchParams, setSearchParams] = useSearchParams();
 
   console.log(searchParams);
 
@@ -105,10 +118,37 @@ function ShoppingListing() {
     // console.log("product id is  :: ", id);
     // console.log("current user is :: ", user);
 
+
+    // console.log(cartItems);
+    let getCartItems = cartItems.items || [];
+    console.log('889',getCartItems);
+
+    if (getCartItems.length) {
+      const indexOfCurrentItem = getCartItems.findIndex(
+        (item) => item.productId === getCurrentProductId
+      );
+      if (indexOfCurrentItem > -1) {
+        const getQuantity = getCartItems[indexOfCurrentItem].quantity;
+        if (getQuantity + 1 > getTotalStock) {
+          toast({
+            title: `Only ${getQuantity} quantity can be added for this item`,
+            variant: "destructive",
+          });
+
+          return;
+        }
+      }
+    }
+
     dispatch(addToCart({ userId: user?._id, productId: id, quantity: 1 })).then(
       (data) => {
         dispatch(fetchCartItems(user?._id));
-        toast({titile : "Product Added successfully :)"});
+        toast({
+          title: "Product Added successfully :)",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       }
     );
   }

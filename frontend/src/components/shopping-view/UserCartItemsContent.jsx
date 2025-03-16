@@ -37,7 +37,7 @@ function UserCartItemsContent({ cartItem }) {
           <br />
           {cartItem.productTitle}
           <div>
-            <img src={cartItem.image} alt="" />
+            <img src={cartItem.image} className="h-[100px]" alt="" />
           </div>
           <br />
           <div className="text-3xl">{cartItem.quantity}</div>

@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import AuthLayout from "./components/auth/AuthLayout";
 import AuthLogin from "./pages/auth/AuthLogin";
 import AuthRegister from "./pages/auth/AuthRegister";
+import GuestLogin from "./pages/auth/GuestLogin";
 
 //admin
 import AdminLayout from "./components/admin-view/Adminlayout";
@@ -30,6 +31,8 @@ import { checkAuth } from "./store/auth-slice";
 
 
 import { Skeleton } from "@/components/ui/skeleton"
+import PaypalReturn from "./pages/shopping-view/PaypalReturn";
+import PaymentSuccess from "./pages/shopping-view/PaymentSuccess";
 
 
 
@@ -60,9 +63,9 @@ export default function App() {
     dispatch(checkAuth())
   },[dispatch])
 
-  // console.log("user",user);
-  // console.log("isAuthenticated",isAuthenticated);
-  // console.log("isLoading",isLoading);
+  console.log("user",user);
+  console.log("isAuthenticated",isAuthenticated);
+  console.log("isLoading",isLoading);
 
   if(isLoading) {
     return <><Skeleton className="w-[100px] h-[20px] rounded-full" />
@@ -91,8 +94,9 @@ export default function App() {
             </CheckAuth>
           }
         >
-          <Route path="Login" element={<AuthLogin />} />
-          <Route path="Register" element={<AuthRegister />} />
+          <Route path="login" element={<AuthLogin />} />
+          <Route path="register" element={<AuthRegister />} />
+          <Route path="guest" element={<GuestLogin />} />
         </Route>
 
         {/* admin-view */}
@@ -123,6 +127,9 @@ export default function App() {
           <Route path="checkout" element={<ShoppingCheckout />} />
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
+          <Route path="paypal-return" element={<PaypalReturn />} />
+          <Route path="payment-success" element={<PaymentSuccess />} />
+
         </Route>
 
         <Route path="*" element={<NotFound />}></Route>
