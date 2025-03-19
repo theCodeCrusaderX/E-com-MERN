@@ -20,7 +20,7 @@ export const registerUser = createAsyncThunk(
         withCredentials: true,
       }
     );
-    console.log("response form backend :: ", response.data);
+    console.log("register user -> ", response.data);
 
     return response.data;
   }
@@ -37,7 +37,7 @@ export const loginUser = createAsyncThunk(
         withCredentials: true,
       }
     );
-    console.log("response form backend :: ", response.data);
+    console.log("loged in user -> ", response.data);
 
     return response.data;
   }
@@ -51,7 +51,7 @@ export const logoutUser = createAsyncThunk("/auth/logoutUser", async () => {
       withCredentials: true,
     }
   );
-  console.log("response form backend :: ", response.data);
+  console.log("loged out user -> ", response.data);
 
   return response.data;
 });
@@ -67,7 +67,7 @@ export const checkAuth = createAsyncThunk("/auth/checkAuth", async () => {
       },
     }
   );
-  console.log("response form backend :: ", response.data);
+  console.log("Auth check -> ", response.data);
 
   return response.data;
 });
@@ -82,7 +82,7 @@ export const loginAsGuest = createAsyncThunk(
         withCredentials: true,
       }
     );
-    console.log("response from backend :: ", response.data);
+    console.log("login as a guest -> ", response.data);
     return response.data;
   }
 );

@@ -67,6 +67,10 @@ const fetchCartItems = async (req, res) => {
       select: "image productTitle productPrice productSalePrice",
     });
 
+
+    console.log(cart);
+    
+
     if (!cart) {
       return res.status(404).json({
         success: false,

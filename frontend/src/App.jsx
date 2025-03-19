@@ -29,17 +29,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { checkAuth } from "./store/auth-slice";
 
-
-import { Skeleton } from "@/components/ui/skeleton"
+// import { Loader2 } from "lucide-react";
+import { Triangle } from "react-loader-spinner";
 import PaypalReturn from "./pages/shopping-view/PaypalReturn";
 import PaymentSuccess from "./pages/shopping-view/PaymentSuccess";
 
-
-
 export default function App() {
-
-
-//app state :: 
+  //app state ::
   // const user = {
   //   role : "admin",
   //   name : "12"
@@ -47,29 +43,37 @@ export default function App() {
   // const isAuthenticated = true
   // const isLoading = false
 
-
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
   );
 
-
   //using useEffect it prevent api to call in infinite loop
-  //we put dispatch as dependency arr if it gets changes which 
+  //we put dispatch as dependency arr if it gets changes which
   //is not regularly happen for more complex project
   useEffect(() => {
-    dispatch(checkAuth())
-  },[dispatch])
+    dispatch(checkAuth());
+  }, [dispatch]);
 
-  console.log("user",user);
-  console.log("isAuthenticated",isAuthenticated);
-  console.log("isLoading",isLoading);
+  console.log("user", user);
+  console.log("isAuthenticated", isAuthenticated);
+  console.log("isLoading", isLoading);
 
   if(isLoading) {
-    return <><Skeleton className="w-[100px] h-[20px] rounded-full" />
-</>
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <Triangle
+        visible={true}
+        height="90"
+        width="90"
+        color="#4fa94d"
+        ariaLabel="triangle-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+      />
+    </div>
+  );
   }
 
   return (
@@ -129,7 +133,6 @@ export default function App() {
           <Route path="listing" element={<ShoppingListing />} />
           <Route path="paypal-return" element={<PaypalReturn />} />
           <Route path="payment-success" element={<PaymentSuccess />} />
-
         </Route>
 
         <Route path="*" element={<NotFound />}></Route>

@@ -134,4 +134,52 @@ const checkAuth = asyncHandler(async (req,res) => {
   return res.status(200).json(new ApiResponse(200,req.user))
 })
 
-export { registerUser, loginUser, logOut,checkAuth };
+
+const guestLogin = asyncHandler(async (req, res) => {
+  // Create a temporary guest user
+  const guestUser = new User({
+    name: `user_${Date.now()}`,
+    email: `guest_${Date.now()}@example.com`, // Unique email
+    password: "guest", // Not used, but required for schema validation
+    role: "guest", // Optional: You can define limited access based on role
+  });
+
+  // Save the guest user to the database
+  await guestUser.save();
+
+  // Generate access and refresh tokens
+  const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(
+    guestUser._id
+  );
+
+  // Remove sensitive info
+  const loggedInGuest = await User.findById(guestUser._id).select(
+    "-password -refreshToken"
+  );
+
+  // Cookie options
+  const options = {
+    httpOnly: true,
+    secure: true,
+    maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days expiry
+  };
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+      new ApiResponse(
+        200,
+        {
+          user: loggedInGuest,
+          accessToken,
+          refreshToken,
+        },
+        "Guest logged in successfully"
+      )
+    );
+});
+
+
+export { registerUser, loginUser, logOut,checkAuth,guestLogin };

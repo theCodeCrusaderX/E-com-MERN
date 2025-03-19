@@ -56,30 +56,34 @@ function AdminSideBar({ open, setOpen }) {
 
   return (
     <Fragment>
-
-      {/* for sm screen */}
+      {/* Sidebar for Small Screens */}
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="right" className="w-64">
+        <SheetContent
+          side="right"
+          className="w-64 bg-white shadow-lg rounded-l-lg border-l border-gray-200"
+        >
           <div className="flex flex-col h-full">
-            <SheetHeader className="border-b">
-              <SheetTitle className="flex gap-2 mt-5 mb-5">
-                <ChartNoAxesCombined size={30} />
-                <h1 className="text-2xl font-extrabold">Admin Panel</h1>
+            <SheetHeader className="border-b pb-3">
+              <SheetTitle className="flex items-center gap-2 mt-5">
+                <ChartNoAxesCombined size={30} className="text-blue-600" />
+                <h1 className="text-2xl font-extrabold text-gray-800">
+                  Admin Panel
+                </h1>
               </SheetTitle>
             </SheetHeader>
             <MenuItems setOpen={setOpen} />
           </div>
         </SheetContent>
       </Sheet>
-      
-      {/* for large screen */}
-      <aside className="hidden w-64 flex-col border-r bg-background p-6 lg:flex">
+
+      {/* Sidebar for Large Screens */}
+      <aside className="hidden lg:flex w-64 flex-col border-r bg-white shadow-md p-6 rounded-r-lg">
         <div
           onClick={() => navigate("/admin/dashboard")}
-          className="flex cursor-pointer items-center gap-2"
+          className="flex cursor-pointer items-center gap-2 hover:bg-gray-100 p-2 rounded-lg transition-all"
         >
-          <ChartNoAxesCombined size={30} />
-          <h1 className="text-2xl font-extrabold">Admin Panel</h1>
+          <ChartNoAxesCombined size={30} className="text-blue-600" />
+          <h1 className="text-2xl font-extrabold text-gray-800">Admin Panel</h1>
         </div>
         <MenuItems />
       </aside>

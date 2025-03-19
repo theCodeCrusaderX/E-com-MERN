@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import bannerOne from "../../assets/banner-1.webp";
 import bannerTwo from "../../assets/banner-2.webp";
 import bannerThree from "../../assets/banner-3.webp";
+import bannerFour from '../../assets/main-image.png'
 import {
   Airplay,
   BabyIcon,
@@ -49,7 +50,7 @@ const brandsWithIcon = [
 ];
 function ShoppingHome() {
 
-  const getFeatureImages = [bannerOne,bannerTwo,bannerThree]
+  const getFeatureImages = [bannerOne,bannerTwo,bannerThree,bannerFour]
 
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -128,7 +129,9 @@ function ShoppingHome() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="relative w-full h-[600px] overflow-hidden">
+
+      {/* banner images  */}
+      <div className="relative w-full h-[600px] overflow-hidden top-[70px]">
         {getFeatureImages && getFeatureImages.length > 0
           ? getFeatureImages.map((slide, index) => (
               <img
@@ -167,7 +170,9 @@ function ShoppingHome() {
           <ChevronRightIcon className="w-4 h-4" />
         </Button>
       </div>
-      <section className="py-12 bg-gray-50">
+
+      {/* sort-by-catagory  */}
+      <section className="py-12 bg-gray-50 mt-[120px]">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
             Shop by category

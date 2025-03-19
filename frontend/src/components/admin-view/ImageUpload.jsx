@@ -75,7 +75,7 @@ function ImageUpload({
     <div
     className={`w-full  mt-4 ${isCustomStyling ? "" : "max-w-md mx-auto"}`}
   >
-    <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>
+    <Label >Upload Image</Label>
     <div
       onDragOver={handleDragOver}
       onDrop={handleDrop}
