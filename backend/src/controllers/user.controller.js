@@ -162,6 +162,7 @@ const guestLogin = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days expiry
+    sameSite: "None",
   };
 
   return res
