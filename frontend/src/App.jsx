@@ -22,7 +22,7 @@ import ShoppingListing from "./pages/shopping-view/ShoppingListing";
 
 //not found compo
 import NotFound from "./pages/not-found/NotFound";
-import CheckAuth from "./components/common/checkAuth";
+import CheckAuth from "./components/common/CheckAuth";
 import Unauth from "./pages/unauth-page/Unauth";
 
 import { useDispatch, useSelector } from "react-redux";
