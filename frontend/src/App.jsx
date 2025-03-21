@@ -14,7 +14,7 @@ import AdminFeatures from "./pages/admin-view/AdminFeatures";
 import AdminProduct from "./pages/admin-view/AdminProduct";
 
 //shopping-view
-import ShoppingLayout from "./components/shopping-view/Shoppinglayout";
+import ShoppingLayout from "./components/shopping-view/ShoppingLayout";
 import ShoppingAccount from "./pages/shopping-view/ShoppingAccount";
 import ShoppingCheckout from "./pages/shopping-view/ShoppingCheckout";
 import ShoppingHome from "./pages/shopping-view/ShoppingHome";
