@@ -2,8 +2,13 @@ import { Cart } from "../../models/cart.model.js";
 import { Product } from "../../models/product.model.js";
 
 const addToCart = async (req, res) => {
+  console.log("helloooo its me");
+  
   try {
     const { userId, productId, quantity } = req.body;
+
+    console.log(userId,productId,quantity);
+    
 
     if (!userId || !productId || quantity <= 0) {
       return res.status(400).json({
@@ -13,6 +18,9 @@ const addToCart = async (req, res) => {
     }
 
     const product = await Product.findById(productId);
+
+    console.log('product is ',product);
+    
 
     if (!product) {
       return res.status(404).json({
@@ -200,42 +208,48 @@ const deleteCartItem = async (req, res) => {
       });
     }
 
+    // Filter out the product that needs to be deleted
     cart.items = cart.items.filter(
-      (item) => item.productId._id.toString() !== productId
+      (item) => item.productId && item.productId._id.toString() !== productId
     );
 
     await cart.save();
 
+    // Repopulate cart to ensure updated data is returned
     await cart.populate({
       path: "items.productId",
-      select: "image title price salePrice",
+      select: "image productTitle productPrice productSalePrice",
     });
 
-    const populateCartItems = cart.items.map((item) => ({
-      productId: item.productId ? item.productId._id : null,
-      image: item.productId ? item.productId.image : null,
-      productTitle: item.productId
-        ? item.productId.productTitle
-        : "Product not found",
-      productPrice: item.productId ? item.productId.productPrice : null,
-      productSalePrice: item.productId ? item.productId.productSalePrice : null,
+    // Format the response with complete product details
+    const updatedCartItems = cart.items.map((item) => ({
+      productId: item.productId?._id || null,
+      image: item.productId?.image || null,
+      productTitle: item.productId?.productTitle || "Product not found",
+      productPrice: item.productId?.productPrice || null,
+      productSalePrice: item.productId?.productSalePrice || null,
       quantity: item.quantity,
     }));
 
     res.status(200).json({
       success: true,
       data: {
-        ...cart._doc,
-        items: populateCartItems,
+        _id: cart._id,
+        userId: cart.userId,
+        items: updatedCartItems,
+        createdAt: cart.createdAt,
+        updatedAt: cart.updatedAt,
+        __v: cart.__v,
       },
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({
       success: false,
-      message: "Error",
+      message: "Internal Server Error",
     });
   }
 };
+
 
 export { addToCart, updateCartItemQty, deleteCartItem, fetchCartItems };

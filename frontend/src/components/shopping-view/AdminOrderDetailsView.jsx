@@ -56,6 +56,7 @@ function AdminOrderDetailsView({ orderDetails }) {
     <DialogContent className="sm:max-w-[650px] bg-white shadow-lg rounded-lg p-6 max-h-[80vh] overflow-y-auto">
       <div className="grid gap-6">
         {/* Order Summary */}
+
         <div className="grid gap-3 border-b pb-4">
           <h2 className="text-lg font-semibold text-gray-800">Order Summary</h2>
           <div className="grid gap-2 text-gray-700">

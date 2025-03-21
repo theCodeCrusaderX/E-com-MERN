@@ -2,6 +2,7 @@ import { AlignJustify, LogOut } from "lucide-react";
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "@/store/auth-slice";
+// import logo from '../../assets/logo.png'
 
 function AdminHeader({ setOpen }) {
   const dispatch = useDispatch();
@@ -15,9 +16,10 @@ function AdminHeader({ setOpen }) {
       {/* Sidebar Toggle Button (Visible on Mobile) */}
       <Button 
         onClick={() => setOpen(true)} 
-        className="lg:hidden flex items-center p-2 rounded-md text-gray-700 hover:bg-gray-200 transition"
+        className="lg:hidden flex items-center p-2 rounded-md  transition"
       >
         <AlignJustify className="w-5 h-5" />
+        {/* <img src={logo} alt="" width='200px'/> */}
       </Button>
 
       {/* Logout Button (Aligned Right) */}

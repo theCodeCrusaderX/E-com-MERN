@@ -28,9 +28,6 @@ app.use(cookieParser())
 import userRouter from "./routes/user.route.js"
 app.use("/api/v1/users",userRouter)
 
-
-
-
 //api for admin 
 import adminRouter from "./routes/admin/products.route.js"
 app.use("/api/v1/admin",adminRouter)

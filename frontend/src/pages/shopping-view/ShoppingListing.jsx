@@ -11,7 +11,7 @@ import { ArrowUpDownIcon } from "lucide-react";
 import { sortOptions } from "@/config";
 import ShoppingProductTile from "../../components/shopping-view/ShoppingProductTile";
 import { useDispatch, useSelector } from "react-redux";
-import { getFilteredProduct } from "@/store/shop/product-slice";
+import { fetchProductDetails, getFilteredProduct } from "@/store/shop/product-slice";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import ShoppingProductDetail from "../../components/shopping-view/ShoppingProductDetail";
@@ -109,11 +109,13 @@ function ShoppingListing() {
     }
   }, [filters]);
 
-  function handleGetProductDetails(id) {
-    console.log(id);
+  function handleGetProductDetails(getCurrentProductId) {
+    // console.log(id);
+    dispatch(fetchProductDetails(getCurrentProductId));
+    
   }
 
-  function handleAddtoCart(id, totalStock) {
+  function handleAddtoCart(getCurrentProductId, totalStock) {
     // console.log("total stock we have :: ",totalStock);
     // console.log("product id is  :: ", id);
     // console.log("current user is :: ", user);
@@ -140,7 +142,7 @@ function ShoppingListing() {
       }
     }
 
-    dispatch(addToCart({ userId: user?._id, productId: id, quantity: 1 })).then(
+    dispatch(addToCart({ userId: user?._id, productId: getCurrentProductId, quantity: 1 })).then(
       (data) => {
         dispatch(fetchCartItems(user?._id));
         toast({

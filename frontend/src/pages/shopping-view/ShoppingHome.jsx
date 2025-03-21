@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import bannerOne from "../../assets/banner-1.webp";
 import bannerTwo from "../../assets/banner-2.webp";
 import bannerThree from "../../assets/banner-3.webp";
-import bannerFour from '../../assets/main-image.png'
+import bannerFour from "../../assets/main-image.png";
 import {
   Airplay,
   BabyIcon,
@@ -49,14 +49,24 @@ const brandsWithIcon = [
   { id: "h&m", label: "H&M", icon: Heater },
 ];
 function ShoppingHome() {
-
-  const getFeatureImages = [bannerOne,bannerTwo,bannerThree,bannerFour]
-
+  const getFeatureImages = [bannerOne, bannerTwo, bannerThree, bannerFour];
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
+
+  console.log("5585", productDetails);
+  const filteredProducts = productList
+    .filter(
+      (product) =>
+        product.productSalePrice !== null &&
+        product.productSalePrice !== 0 &&
+        product.totalStock !== 0 &&
+        product.productSalePrice < product.productPrice
+    )
+    .slice(0, 4); // Take only the first 4 valid elements
+
   // const { getFeatureImages } = useSelector((state) => state.commonFeature);
 
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
@@ -83,7 +93,7 @@ function ShoppingHome() {
 
   function handleAddtoCart(getCurrentProductId) {
     // console.log(user._id);
-    
+
     dispatch(
       addToCart({
         userId: user?._id,
@@ -128,8 +138,7 @@ function ShoppingHome() {
   // }, [dispatch]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-
+    <div className="flex flex-col min-h-screen ">
       {/* banner images  */}
       <div className="relative w-full h-[600px] overflow-hidden top-[70px]">
         {getFeatureImages && getFeatureImages.length > 0
@@ -195,6 +204,7 @@ function ShoppingHome() {
         </div>
       </section>
 
+      {/* sort-by-brand  */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">Shop by Brand</h2>
@@ -221,7 +231,7 @@ function ShoppingHome() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {productList && productList.length > 0
-              ? productList.map((productItem) => (
+              ? filteredProducts.map((productItem) => (
                   <ShoppingProductTile
                     handleGetProductDetails={handleGetProductDetails}
                     product={productItem}
@@ -236,7 +246,12 @@ function ShoppingHome() {
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}
         productDetails={productDetails}
-      />
+      >
+      </ProductDetailsDialog>
+
+      <div className=" flex justify-center mb-4">
+        <Button className='hover:bg-green-700' onClick={() => navigate('/shop/listing')}>View All Product</Button>
+      </div>
     </div>
   );
 }
